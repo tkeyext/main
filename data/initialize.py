@@ -1,26 +1,23 @@
-from pandas.io import json
 import requests
 import math
 import pandas as pd
-import sqlite3
 import re
 
 BASE_URL = 'https://api.apos.to'
 PAGE = 0
 
 def getStoryCount ():
+  """Fetches the total story count so that we can paginate our requests."""
   response = requests.get(f'{BASE_URL}/stories/list?limit=1&newsletter={getNewsletterId()}')
   return response.json()['count']
 
-def storeStory (story = None):
-  raw_data = pd.read_csv('./data/raw.csv')
-  raw_data.head()
-
 def getNewsletterId ():
+  """Fetches the target newsletter's id, so that we can pick stories from only one newsletter."""
   response = requests.get(f'{BASE_URL}/newsletters/daily')
   return response.json()['data']['_id']
 
 def getStories ():
+  """Fetches the stories and maps their values to a dataframe."""
   count = getStoryCount()
   pages = range(math.floor(count / 1000))
   df = pd.DataFrame(columns=('ID', 'Body', 'Tags'))
@@ -43,20 +40,5 @@ def getStories ():
     print(df)
   
   df.to_csv('./data/raw.csv')
-  
-def getWords ():
-  df = pd.DataFrame(columns=['Word', 'Tag'])
-  stories = pd.read_csv('./data/raw.csv')
-  for i, row in stories.iterrows():
-    print('Processing row', i)
-    Body = str(row['Body']).strip()
-    Tags = str(row['Tags']).split('??')
-    Body = re.sub("[^\w]+", " ", str(Body))
-    Words = Body.split(' ')
-    for tag in Tags:
-      for word in Words:
-        print(word, '-', tag)
-        df.append({ 'Word': word, 'Tag': tag }, ignore_index=True)
-  df.to_csv('./data/processed.csv')
 
 getStories()

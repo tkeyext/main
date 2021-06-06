@@ -7,7 +7,7 @@ import re
 stop = stopwords.words('turkish')
 
 def getWordsTokenized ():
-  """Processes all of the words in the raw csv file"""
+  """Processes all of the words in the raw csv file."""
   raw = pd.read_csv('./data/raw.csv')
   tokenized = DataFrame(columns=['Word', 'Keyword'])
   for i, row in raw.iterrows():
