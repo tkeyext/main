@@ -19,7 +19,7 @@ class LogisticRegression:
     # gradient descent
     for _ in range(self.iterations):
       linear_model = np.dot(x, self.weights) + self.bias
-      print(linear_model[0])
+      # print(linear_model[0])
       y_predicted = self._sigmoid(linear_model)
 
       weight_derivative = (1 / sample_size) * np.dot(x.T, (y_predicted-y))
@@ -39,11 +39,13 @@ class LogisticRegression:
 
 def run (x: np.ndarray, y: np.ndarray) -> list:
   from sklearn.model_selection import train_test_split
-  from sklearn import datasets
-  import matplotlib as plt
+  # from sklearn import datasets
+  # import matplotlib as plt
   
-  bc = datasets.load_breast_cancer()
-  x, y = bc.data, bc.target
+  # bc = datasets.load_breast_cancer()
+  # x, y = bc.data, bc.target
+  print('x:', x)
+  print('y:', y)
   x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2, random_state=1234)
   # print(type(x_train[0]))
   def accuracy (y_test, y_pred):
@@ -57,4 +59,7 @@ def run (x: np.ndarray, y: np.ndarray) -> list:
   print("LR classification accuracy:", accuracy(y_test, predictions))
   return predictions
 
-run([], [])
+x = np.ndarray((2,4), buffer=np.array([1,2,3,4]+[1,1,1,1]))
+y = np.ndarray((2,1), buffer=np.array([1,0]))
+print(x)
+run(x, y)

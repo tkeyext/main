@@ -29,7 +29,7 @@ def removeStopwords(text: str) -> str:
 # def getWords1 ():
 #     """processes the raw data to as n-grams"""
 #     df = pd.DataFrame(columns=['Word', 'Tag'])
-#     stories = pd.read_csv('C:\\Users\kaan3\PycharmProjects\\484\main\.old\\data\\raw.csv')
+#     stories = pd.read_csv('C:\\Users\kaan3\PycharmProjects\\484\main\.old\\data\\documents.csv')
 #     for i, row in stories.iterrows():
 #       print('Processing row', i)
 #       Body = str(row['Body']).strip()
@@ -48,7 +48,7 @@ def getWords():
     start = timeit.timeit()
     print(start)
     df = pd.DataFrame(columns=['Word', 'Tags']) #creating a new dataframe to insert the processed items
-    stories = pd.read_csv('./data/raw.csv') #opening the imported stories from aposto!
+    stories = pd.read_csv('./data/documents.csv') #opening the imported stories from aposto!
     print(stories)
     for i in stories.index: #looping over each index to insert the each word into the df
         body = stories["Body"].iloc[i] #getting each row i.e. story
