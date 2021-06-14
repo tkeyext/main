@@ -13,11 +13,11 @@ def getWordsTokenized ():
   """Processes all of the words in the raw csv file."""
   raw = pd.read_csv('./data/documents.csv')
   tokenized = DataFrame(columns=['Document', 'Word', 'Keyword']).rename_axis('ID')
-  for i, row in raw.iterrows():
+  for i in raw.index:
     print('Processing row', i)
     # print('\n\n', str(row['Body']))
-    body = str(row['Body']).strip()
-    keywords = list(str(row['Tags']).split('??'))
+    body = str(raw['Body'].iloc[i]).strip()
+    keywords = list(str(raw['Tags'].iloc[i]).split('??'))
     keywords = list(map(lambda x: x.lower(),keywords))
     # print('\n', keywords, '\n')
     body = re.sub("\n", " ", body)
@@ -31,18 +31,18 @@ def getWordsTokenized ():
     digrams = []
     for j in range(len(words) - 1):
       digrams.append(f'{words[j]} {words[j+1]}')
-    words += digrams
     # Trigrams
     trigrams = []
     for j in range(len(words) - 2):
       trigrams.append(f'{words[j]} {words[j+1]} {words[j+2]}')
+    # Append the n-grams
+    words += digrams
     words += trigrams
-    
     for word in words:
       # tokenized.loc[len(tokenized.index)] = [word, float(words.count(word) / len(words)), int(word.lower() in keywords)]
       tokenized.loc[len(tokenized.index)] = [i, word, int(word.lower() in keywords)]
     # Comment this out later
-    if i > 500:
+    if i > 100:
       break  
   tokenized.to_csv('./data/words.csv')
 

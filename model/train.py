@@ -2,6 +2,7 @@
 # f(w, b) = wx + b
 import numpy as np
 from scipy.sparse import data
+import pandas as pd
 
 class LogisticRegression:
   def __init__ (self, learning_rate = 0.001, iterations = 1000):
@@ -24,7 +25,6 @@ class LogisticRegression:
 
       weight_derivative = (1 / sample_size) * np.dot(x.T, (y_predicted-y))
       bias_derivative = (1 / sample_size) * np.sum(y_predicted - y)
-
       self.weights -= self.learning_rate * weight_derivative
       self.bias -= self.learning_rate * bias_derivative
 
@@ -44,8 +44,7 @@ def run (x: np.ndarray, y: np.ndarray) -> list:
   
   # bc = datasets.load_breast_cancer()
   # x, y = bc.data, bc.target
-  print('x:', x)
-  print('y:', y)
+  # print(x.shape, y.shape)
   x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2, random_state=1234)
   # print(type(x_train[0]))
   def accuracy (y_test, y_pred):
@@ -59,7 +58,13 @@ def run (x: np.ndarray, y: np.ndarray) -> list:
   print("LR classification accuracy:", accuracy(y_test, predictions))
   return predictions
 
-x = np.ndarray((2,4), buffer=np.array([1,2,3,4]+[1,1,1,1]))
-y = np.ndarray((2,1), buffer=np.array([1,0]))
-print(x)
-run(x, y)
+training_data = pd.read_csv("./data/training.csv")
+
+X = pd.DataFrame(training_data['X'].apply(lambda x: eval(x), 0).tolist(), columns=['a', 'b', 'c', 'd']).to_numpy()
+y = training_data['Y'].astype('int').to_numpy()
+
+print(X.shape, y.shape)
+# print(df_x, df_y)
+# print(df_x.shape, df_y.shape)
+# print(X, X.shape)
+run(X, y)
