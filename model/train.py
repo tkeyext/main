@@ -2,6 +2,7 @@
 # f(w, b) = wx + b
 import numpy as np
 from scipy.sparse import data
+import pandas as pd
 
 class LogisticRegression:
   def __init__ (self, learning_rate = 0.001, iterations = 1000):
@@ -59,7 +60,11 @@ def run (x: np.ndarray, y: np.ndarray) -> list:
   print("LR classification accuracy:", accuracy(y_test, predictions))
   return predictions
 
-x = np.ndarray((2,4), buffer=np.array([1,2,3,4]+[1,1,1,1]))
-y = np.ndarray((2,1), buffer=np.array([1,0]))
+training_data = pd.read_csv("./data/training.csv")
+
+x = training_data.take([1], axis = 1)
+y = training_data.take([2], axis = 1)
+
 print(x)
+print(y)
 run(x, y)

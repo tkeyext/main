@@ -13,11 +13,11 @@ def getWordsTokenized ():
   """Processes all of the words in the raw csv file."""
   raw = pd.read_csv('./data/documents.csv')
   tokenized = DataFrame(columns=['Document', 'Word', 'Keyword']).rename_axis('ID')
-  for i, row in raw.iterrows():
+  for i in raw.index:
     print('Processing row', i)
     # print('\n\n', str(row['Body']))
-    body = str(row['Body']).strip()
-    keywords = list(str(row['Tags']).split('??'))
+    body = str(raw['Body'].iloc[i]).strip()
+    keywords = list(str(raw['Tags'].iloc[i]).split('??'))
     keywords = list(map(lambda x: x.lower(),keywords))
     # print('\n', keywords, '\n')
     body = re.sub("\n", " ", body)
@@ -28,19 +28,19 @@ def getWordsTokenized ():
     words = [word for word in words if word not in stop]
     words = [word for word in words if len(word) > 0]
     # Digrams
-    for i in range(len(words) - 1):
-      digrams = []
-      digrams.append(f'{words[i]} {words[i+1]}')
+    digrams = []
+    for ind in range(len(words) - 1):
+      digrams.append(f'{words[ind]} {words[ind+1]}')
       digrams = [digram for digram in digrams if digram not in stop]
       digrams = [digram for digram in digrams if len(digram) > 0]
-      words += digrams
+    words += digrams
     # Trigrams
-    for i in range(len(words) - 2):
-      trigrams = []
-      trigrams.append(f'{words[i]} {words[i+1]} {words[i+2]}')
+    trigrams = []
+    for index in range(len(words) - 2):
+      trigrams.append(f'{words[index]} {words[index+1]} {words[index+2]}')
       trigrams = [trigram for trigram in trigrams if trigram not in stop]
       trigrams = [trigram for trigram in trigrams if len(trigram) > 0]
-      words += trigrams
+    words += trigrams
     
     for word in words:
       # tokenized.loc[len(tokenized.index)] = [word, float(words.count(word) / len(words)), int(word.lower() in keywords)]

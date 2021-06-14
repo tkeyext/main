@@ -1,4 +1,5 @@
 import math
+from pandas.core.frame import DataFrame
 from pandas.core.indexes import base
 from wordfreq import word_frequency as wf
 import pandas as pd
@@ -32,5 +33,41 @@ def tfidf (word: str, document: int) -> float:
   print('tfidf is', tfidf)
   return tfidf
 
-tfidf('geçtiğimiz', 68)
 
+def getWordsFeaturised():
+  """processes all the tokenized words and replaces them with feature values"""
+  words = pd.read_csv("./data/words.csv")
+  training_data = DataFrame(columns=["X", "Y"]).rename_axis("ID")
+  
+  for i in words.index:
+    print("processing row", i)
+    word = str(words["Word"].iloc[i])
+    result = int(words["Keyword"].iloc[i]) 
+
+    features = []
+    
+    #uppercasedness 
+    feature_uppercased = uppercased(word) 
+    features.append(feature_uppercased)
+
+    #ngram value
+    feature_ngram = ngram(word)
+    features.append(feature_ngram)
+
+    #totalfreq value
+    feature_totalfreq = totalFreq(word)
+    features.append(feature_totalfreq)
+
+    #tfidf value
+    document = int(words["Document"].iloc[i])
+    feature_tfidf = tfidf(word, document)
+    features.append(feature_tfidf)
+
+    training_data.loc[len(training_data.index)] = [features, result]
+
+    if i > 100:
+      break
+  training_data.to_csv("./data/training.csv")
+  
+
+getWordsFeaturised()
