@@ -28,19 +28,15 @@ def getWordsTokenized ():
     words = [word for word in words if word not in stop]
     words = [word for word in words if len(word) > 0]
     # Digrams
-    for i in range(len(words) - 1):
-      digrams = []
-      digrams.append(f'{words[i]} {words[i+1]}')
-      digrams = [digram for digram in digrams if digram not in stop]
-      digrams = [digram for digram in digrams if len(digram) > 0]
-      words += digrams
+    digrams = []
+    for j in range(len(words) - 1):
+      digrams.append(f'{words[j]} {words[j+1]}')
+    words += digrams
     # Trigrams
-    for i in range(len(words) - 2):
-      trigrams = []
-      trigrams.append(f'{words[i]} {words[i+1]} {words[i+2]}')
-      trigrams = [trigram for trigram in trigrams if trigram not in stop]
-      trigrams = [trigram for trigram in trigrams if len(trigram) > 0]
-      words += trigrams
+    trigrams = []
+    for j in range(len(words) - 2):
+      trigrams.append(f'{words[j]} {words[j+1]} {words[j+2]}')
+    words += trigrams
     
     for word in words:
       # tokenized.loc[len(tokenized.index)] = [word, float(words.count(word) / len(words)), int(word.lower() in keywords)]
