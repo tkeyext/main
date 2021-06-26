@@ -71,12 +71,12 @@ def getWordsFeaturised():
     feature_tfidf = tfidf(word, document)
     features.append(feature_tfidf)
 
+    #entitiy value 
+    entitization = int(words["Entities"].iloc[i])
+    features.append(entitization)
+
     # features = [features]
     training_data.loc[len(training_data.index)] = [features, result]
     training_data.to_csv("./data/training.csv")
     
-# getWordsFeaturised()
-doc = nlp('Spotify büyük bir uygulamadır.')
-# print([(X.test, X.label_)] for X in doc.ents)
-print([(X.text, X.label_) for X in doc.ents])
-print([X.text for X in doc.ents])
+getWordsFeaturised()

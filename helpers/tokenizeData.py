@@ -20,7 +20,9 @@ def getWordsTokenized ():
     print('Processing row', i)
     # print('\n\n', str(row['Body']))
     entities = nlp(str(raw['Body'].iloc[i])).ents
-    print([(X.text, X.label_) for X in entities])
+    entities = list(filter(lambda X: X.label_ != "CARDINAL" and X.label_ != "DATE", entities))
+    entities = list(map(lambda x: str(x).lower().strip(),entities))
+    print(entities)
     body = str(raw['Body'].iloc[i]).strip()
     keywords = list(str(raw['Tags'].iloc[i]).split('??'))
     keywords = list(map(lambda x: x.lower(),keywords))
@@ -45,9 +47,12 @@ def getWordsTokenized ():
     words += trigrams
     for word in words:
       # tokenized.loc[len(tokenized.index)] = [word, float(words.count(word) / len(words)), int(word.lower() in keywords)]
-      tokenized.loc[len(tokenized.index)] = [i, word, entities, int(word.lower() in keywords)]
+      tokenized.loc[len(tokenized.index)] = [i, word, int(word.lower() in entities), int(word.lower() in keywords)]
     # Comment this out later
     tokenized.to_csv('./data/words.csv')
+
+    if i > 100:
+      break
 
 
 getWordsTokenized()
