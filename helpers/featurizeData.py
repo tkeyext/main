@@ -4,6 +4,10 @@ from pandas.core.indexes import base
 from wordfreq import word_frequency as wf
 import pandas as pd
 import math
+import spacy
+# import en_core_web_sm
+nlp = spacy.load("en_core_web_sm")
+
 
 def uppercased (word: str) -> int:
   """Returns 1 if word is uppercased at some point."""
@@ -33,14 +37,18 @@ def tfidf (word: str, document: int) -> float:
   print('tfidf is', tfidf)
   return tfidf
 
+def namedEntity (word: str) -> int:
+  """Returns 1 if word is a named entity"""
+  return nlp(word)
+  return [(str(word), word.label_) for x in nlp(str(word)).ents]
+
 
 def getWordsFeaturised():
-  """processes all the tokenized words and replaces them with feature values"""
-  words = pd.read_csv("./data/words.csv")
+  """processes all the sampled tokenized words and replaces them with feature values"""
+  words = pd.read_csv("./data/sampled.csv").sample(frac=1)
   training_data = DataFrame(columns=["X", "Y"]).rename_axis("ID")
-  
+
   for i in words.index:
-    print("processing row", i)
     word = str(words["Word"].iloc[i])
     result = int(words["Keyword"].iloc[i]) 
 
@@ -65,10 +73,10 @@ def getWordsFeaturised():
 
     # features = [features]
     training_data.loc[len(training_data.index)] = [features, result]
-
-    if i > 500:
-      break
-  training_data.to_csv("./data/training.csv")
-  
-
-getWordsFeaturised()
+    training_data.to_csv("./data/training.csv")
+    
+# getWordsFeaturised()
+doc = nlp('Spotify büyük bir uygulamadır.')
+# print([(X.test, X.label_)] for X in doc.ents)
+print([(X.text, X.label_) for X in doc.ents])
+print([X.text for X in doc.ents])

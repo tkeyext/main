@@ -2,6 +2,8 @@ import pandas as pd
 from pandas import DataFrame
 from nltk.corpus import stopwords
 import re
+import spacy
+nlp = spacy.load("en_core_web_sm")
 
 stop = stopwords.words('turkish')
 
@@ -12,10 +14,13 @@ def getTermFrequency (word: str, words: list) -> int:
 def getWordsTokenized ():
   """Processes all of the words in the raw csv file."""
   raw = pd.read_csv('./data/documents.csv')
-  tokenized = DataFrame(columns=['Document', 'Word', 'Keyword']).rename_axis('ID')
+  tokenized = DataFrame(columns=['Document', 'Word', 'Entities', 'Keyword']).rename_axis('ID')
+  # tokenized = pd.read_csv('./data/words.csv', names=['Document', 'Word', 'Entities', 'Keyword']).rename_axis('ID')
   for i in raw.index:
     print('Processing row', i)
     # print('\n\n', str(row['Body']))
+    entities = nlp(str(raw['Body'].iloc[i])).ents
+    print([(X.text, X.label_) for X in entities])
     body = str(raw['Body'].iloc[i]).strip()
     keywords = list(str(raw['Tags'].iloc[i]).split('??'))
     keywords = list(map(lambda x: x.lower(),keywords))
@@ -40,11 +45,9 @@ def getWordsTokenized ():
     words += trigrams
     for word in words:
       # tokenized.loc[len(tokenized.index)] = [word, float(words.count(word) / len(words)), int(word.lower() in keywords)]
-      tokenized.loc[len(tokenized.index)] = [i, word, int(word.lower() in keywords)]
+      tokenized.loc[len(tokenized.index)] = [i, word, entities, int(word.lower() in keywords)]
     # Comment this out later
-    if i > 100:
-      break  
-  tokenized.to_csv('./data/words.csv')
+    tokenized.to_csv('./data/words.csv')
 
 
 getWordsTokenized()
