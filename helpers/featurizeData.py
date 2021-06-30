@@ -34,11 +34,6 @@ def tfidf (docsLen: int, words: DataFrame, docwords: DataFrame, word: str) -> fl
   tfidf = float(tf * idf)
   return tfidf
 
-def namedEntity (word: str) -> int:
-  """Returns 1 if word is a named entity"""
-  return nlp(word)
-
-
 def getWordsFeaturised():
   """processes all the sampled tokenized words and replaces them with feature values"""
   words = pd.read_csv("./data/sampled.csv").sample(frac=1)

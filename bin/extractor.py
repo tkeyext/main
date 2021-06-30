@@ -6,10 +6,8 @@ import re
 import helpers.featurizeData as featurize
 import pandas as pd
 
-
 # from sklearn.linear_model import LogisticRegression
 # from sklearn.model_selection import train_test_split
-  
 
 # training_data = pd.read_csv("./data/training.csv")
 
@@ -26,8 +24,6 @@ import pandas as pd
 
 # print(clf.score(x_test, y_test))
 
-
-
 def extractKeywords (body: str, regressor: LogisticRegression) -> list:
   # Extract entities
   nlp = spacy.load("en_core_web_sm")
@@ -37,6 +33,7 @@ def extractKeywords (body: str, regressor: LogisticRegression) -> list:
       list(filter(lambda x: x.label_ != 'CARDINAL' and x.label_ != 'DATE', nlp(body).ents))
     )
   )
+  print(entities)
   # Extract words from normalized body
   words = re.sub("[^\w ]+", " ",
     re.sub("\[http.*\]", "", 
