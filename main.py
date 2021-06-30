@@ -1,18 +1,23 @@
-from model.train import LogisticRegression
+from model import train
 
+train.start('./data/training.csv')
+
+from model.regression import LogisticRegression
+from bin.extractor import extractKeywords
+
+txt = """• Porsche
+[https://www.bloomberg.com/news/articles/2021-06-20/porsche-to-make-high-performance-battery-cells-in-new-venture?sref=4TAH79Na]
+elektrikli araçlarında kullanmak üzere pil hücreleri geliştirmek için Almanya
+merkezli şarj modülleri üreticisi Custom Cells ile iş birliği yapacaklarını
+açıkladı. Küçük ölçekli üretime 2024’te başlanacağı ve pil teknolojilerinin
+motor sporlarında test edileceği belirtildi.
+
+ * Öte yandan: 2030'da firmanın küresel satışlarının %80'inden fazlasının
+   tamamen veya kısmen elektrikli modeller olacağı tahmin ediliyor."""
 
 regressor = LogisticRegression()
-regressor.load("model.txt")
+# Select a models from [model1, model2]
+regressor.load("model2")
 
-txt = """Sinema salonları 1 Temmuz’a kadar kapalı kalmaya devam edecek. Yayımlanan
-genelgede Kültür ve Turizm Bakanlığı yetkilileri ve sektör temsilcileriyle
-yapılan görüşmeler sonucunda salgınla mücadele tedbirleri kapsamında
-devamlılığın sağlanması hususu göz önünde bulundurularak bu kararın alındığı
-belirtildi. 
-
- * Bir adım geriden: 1 Haziran’da yayımlanan genelgede sinema salonlarının pazar
-   günleri hariç her gün 07.00-21.00 saatleri arasında %50 kapasiteyle faaliyet
-   gösterebileceği belirtilmiş bağımsız sinema salonları hafta sonu özel
-   gösterimler düzenlemek için çalışmalarına başlamıştı."""
-
-regressor.predict
+keywords = extractKeywords(txt, regressor)
+print(keywords)

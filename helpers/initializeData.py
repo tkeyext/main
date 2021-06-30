@@ -19,12 +19,10 @@ def getNewsletterId ():
 def getStories ():
   """Fetches the stories and maps their values to a dataframe."""
   count = getStoryCount()
-  pages = range(math.floor(count / 1000))
+  pages = range(math.floor(count / 999))
   df = pd.DataFrame(columns=('ID', 'Body', 'Tags'))
-  print(df)
   for page in pages:
-    print(page)
-    request = f'{BASE_URL}/stories/list?sort=publishedAt&desc=true&limit=1000&page={page}&newsletter={getNewsletterId()}&type=bullet'
+    request = f'{BASE_URL}/stories/list?sort=publishedAt&desc=true&limit=999&page={page}&newsletter={getNewsletterId()}&type=bullet'
     stories = requests.get(request)
     stories = list(stories.json()['data'])
     for story in stories:
@@ -37,8 +35,7 @@ def getStories ():
 
         Tags = '??'.join(list(story['tags']))
         df = df.append({ 'ID': ID, 'Body': Body, 'Tags': Tags }, ignore_index=True)
-    print(df)
   
   df.to_csv('./data/documents.csv')
 
-getStories()
+# getStories()

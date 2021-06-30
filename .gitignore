@@ -1,5 +1,3 @@
-/.old
-.vscode
+*vscode
 *.old
-data/training.csv
-data/words.csv
+*__pycache__

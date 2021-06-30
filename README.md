@@ -28,3 +28,13 @@ A **Logistic Regression** model will be trained using the features and results. 
 
 ## Evaluation Method
 Around 1000 stories will be selected randomly and it will be exluded from the dataset to be used as a test for the model. The results of the model will be compared with the real values of the data and thus we will obtain the accuracy score of the model.
+
+# Results
+
+## Data Evaluation
+The data we used for this model was not of high standard. The annotators were confused whether they were supposed to annottage keywords or tags. We had examples such as a word `X` was keyworded in one document but not in another. These examples neutralized our model. In future, ambiguous keywords will be eliminated.
+
+## Feature Evaluation
+
+## Evaluation Evaluation
+The evaluation itself can return misleading scores depending on how the data was sampled. If we try to use a set of 50% percent keyworded words and %50 percent of non-keyworded words, a result of 50% accuracy score means that our model is either exaggerating (everything-is-keyword) or underestimating (nothing-is-keyword). In `model2`, we got an accuracy score of ~80% but when we run it against real texts, we realized it exaggerates also. Tests with different sample sizes are required in future.

@@ -1,3 +1,4 @@
+from numpy import column_stack
 import pandas as pd
 from pandas import DataFrame
 from nltk.corpus import stopwords
@@ -14,19 +15,19 @@ def getTermFrequency (word: str, words: list) -> int:
 def getWordsTokenized ():
   """Processes all of the words in the raw csv file."""
   raw = pd.read_csv('./data/documents.csv')
-  tokenized = DataFrame(columns=['Document', 'Word', 'Entities', 'Keyword']).rename_axis('ID')
-  # tokenized = pd.read_csv('./data/words.csv', names=['Document', 'Word', 'Entities', 'Keyword']).rename_axis('ID')
+  tokenized = open('./data/words', 'w')
+
   for i in raw.index:
     print('Processing row', i)
-    # print('\n\n', str(row['Body']))
+    # Define entities
     entities = nlp(str(raw['Body'].iloc[i])).ents
     entities = list(filter(lambda X: X.label_ != "CARDINAL" and X.label_ != "DATE", entities))
     entities = list(map(lambda x: str(x).lower().strip(),entities))
-    print(entities)
-    body = str(raw['Body'].iloc[i]).strip()
+    # Handle keywords
     keywords = list(str(raw['Tags'].iloc[i]).split('??'))
     keywords = list(map(lambda x: x.lower(),keywords))
-    # print('\n', keywords, '\n')
+    # Handle body
+    body = str(raw['Body'].iloc[i]).strip()
     body = re.sub("\n", " ", body)
     body = re.sub("\[http.*\]", "", body)
     body = re.sub("[^\w ]+", " ", body)
@@ -45,14 +46,11 @@ def getWordsTokenized ():
     # Append the n-grams
     words += digrams
     words += trigrams
+    
     for word in words:
-      # tokenized.loc[len(tokenized.index)] = [word, float(words.count(word) / len(words)), int(word.lower() in keywords)]
-      tokenized.loc[len(tokenized.index)] = [i, word, int(word.lower() in entities), int(word.lower() in keywords)]
-    # Comment this out later
-    tokenized.to_csv('./data/words.csv')
+      tokenized.write(f'{i},{word},{int(word.lower() in entities)},{int(word.lower() in keywords)}\n')
 
-    if i > 100:
-      break
+  tokenized = pd.read_csv('./data/words', names=["Document", "Word", "Entities", "Keyword"]).rename_axis('ID')
+  tokenized.to_csv('./data/words.csv')
 
-
-getWordsTokenized()
+# getWordsTokenized()
