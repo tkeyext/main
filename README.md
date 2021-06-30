@@ -22,6 +22,7 @@ The words are tokenized by filtering out the punctuation marks and stopwords. Ea
 (4) term length,
 (5) n-gram value,
 (6) properness.
+(7) entity value(0 or 1)
 
 
 A **Logistic Regression** model will be trained using the features and results. The results will be valued whether the tokens were annotated as keywords or not.
