@@ -28,6 +28,18 @@ A **Logistic Regression** model will be trained using the features and results. 
 ## Evaluation Method
 Around 1000 stories will be selected randomly and it will be exluded from the dataset to be used as a test for the model. The results of the model will be compared with the real values of the data and thus we will obtain the accuracy score of the model.
 
+# Installation & Preparation
+Uncomment the line 41 on `helpers/initializeData.py`
+Uncomment the line 56 on `helpers/tokenizeData.py`
+Uncomment the line 15 on `helpers/sampleData.py`
+Uncomment the line 78 on `helpers/featurizeData.py` and run:
+```
+python helpers/initializeData.py
+python helpers/tokenizeData.py
+python helpers/sampleData.py
+python helpers/featurizeData.py
+python main.py
+```
 # Results
 ## Data Evaluation
 The data we used for this model was not of high standard. The annotators were confused whether they were supposed to annottage keywords or tags. We had examples such as a word `X` was keyworded in one document but not in another. These examples neutralized our model. In future, ambiguous keywords will be eliminated.

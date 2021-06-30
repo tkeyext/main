@@ -6,6 +6,7 @@ import re
 import helpers.featurizeData as featurize
 import pandas as pd
 
+#! DEPRECATED
 # from sklearn.linear_model import LogisticRegression
 # from sklearn.model_selection import train_test_split
 
@@ -25,7 +26,8 @@ import pandas as pd
 # print(clf.score(x_test, y_test))
 
 def extractKeywords (body: str, regressor: LogisticRegression) -> list:
-  # Extract entities
+  """Extracts the keywords from a document"""
+  # Extract entities (excluding cardinals and dates)
   nlp = spacy.load("en_core_web_sm")
   entities = list(
     map(
